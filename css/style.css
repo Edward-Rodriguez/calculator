@@ -59,7 +59,7 @@ body {
 .clear,
 .sign,
 .percent,
-.period,
+.decimal,
 .equals,
 .zero {
   width: 24%;
