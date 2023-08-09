@@ -75,7 +75,8 @@ body {
   background-color: #a0a0a0;
 }
 
-.operator {
+.operator,
+.equals {
   background-color: #f69906;
   color: #f6f6f6;
 }

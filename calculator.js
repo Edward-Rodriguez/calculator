@@ -28,17 +28,13 @@ function divide(num1, num2) {
 function operate(operator, num1, num2) {
   switch (operator) {
     case 'add':
-      add(num1, num2);
-      break;
+      return add(num1, num2);
     case 'subtract':
-      subtract(num1, num2);
-      break;
+      return subtract(num1, num2);
     case 'multiply':
-      multiply(num1, num2);
-      break;
+      return multiply(num1, num2);
     case 'divide':
-      divide(num1, num2);
-      break;
+      return divide(num1, num2);
     default:
       break;
   }
@@ -47,11 +43,6 @@ function operate(operator, num1, num2) {
 function updateDisplay() {
   const display = document.querySelector('.display');
   display.textContent = calculator.displayValue;
-}
-
-function clearDisplay() {
-  calculator.displayValue = null;
-  updateDisplay();
 }
 
 function resetCalculator() {
@@ -75,15 +66,33 @@ function handleButtonClick(event) {
     case 'sign':
       inputSign();
       break;
+    case 'operator':
+      calculator.operator = event.target.value;
+      break;
+    case 'equals':
+      inputEqualsOperator();
+      break;
   }
   updateDisplay();
 }
 
 function inputOperand(operand) {
-  if (calculator.firstNumber == null) {
+  if (calculator.firstNumber === null) {
+    //handles first operand input
     calculator.firstNumber = +operand;
     calculator.displayValue = operand;
+  } else if (calculator.operator !== null) {
+    if (calculator.secondNumber === null) {
+      //handles second operand input (after operator)
+      calculator.secondNumber = +operand;
+      calculator.displayValue = operand;
+    } else {
+      //keep appending operand to existing secondNumber
+      calculator.displayValue += operand;
+      calculator.secondNumber = +calculator.displayValue;
+    }
   } else {
+    //keep appending to firstNumber
     calculator.displayValue += operand;
     calculator.firstNumber = +calculator.displayValue;
   }
@@ -92,15 +101,32 @@ function inputOperand(operand) {
 function inputDecimal() {
   if (!calculator.displayValue.includes('.')) {
     calculator.displayValue += '.';
-    calculator.firstNumber = +calculator.displayValue;
+    if (calculator.secondNumber == null)
+      calculator.firstNumber = +calculator.displayValue;
+    else calculator.secondNumber = +calculator.displayValue;
   }
 }
 
+//to toggle minus sign
 function inputSign() {
   if (+calculator.displayValue < 0)
     calculator.displayValue = calculator.displayValue.slice(1);
   else calculator.displayValue = '-' + calculator.displayValue;
   calculator.firstNumber = +calculator.displayValue;
+}
+
+function inputEqualsOperator() {
+  let result = operate(
+    calculator.operator,
+    calculator.firstNumber,
+    calculator.secondNumber
+  );
+  calculator.displayValue = result.toString();
+  //reassign first/second num for future operations
+  //first will store running total, second will store next operand
+  calculator.firstNumber = result;
+  calculator.secondNumber = null;
+  calculator.operator = null;
 }
 
 updateDisplay();
