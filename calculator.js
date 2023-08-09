@@ -1,8 +1,8 @@
 let calculator = {
-  firstNumber: '',
-  secondNumber: '',
-  operator: '',
-  displayValue: '',
+  firstNumber: null,
+  secondNumber: null,
+  operator: null,
+  displayValue: null,
 };
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) =>
@@ -50,14 +50,14 @@ function updateDisplay() {
 }
 
 function clearDisplay() {
-  calculator.displayValue = '';
+  calculator.displayValue = null;
   updateDisplay();
 }
 
 function resetCalculator() {
   Object.entries(calculator).forEach((entry) => {
     const [key, value] = entry;
-    calculator[key] = '';
+    calculator[key] = null;
   });
 }
 
@@ -72,23 +72,35 @@ function handleButtonClick(event) {
     case 'decimal':
       inputDecimal();
       break;
+    case 'sign':
+      inputSign();
+      break;
   }
   updateDisplay();
 }
 
 function inputOperand(operand) {
-  if (!calculator.firstNumber) {
-    calculator.firstNumber = operand;
-    calculator.displayValue += calculator.firstNumber;
-    console.log(calculator.firstNumber);
+  if (calculator.firstNumber == null) {
+    calculator.firstNumber = +operand;
+    calculator.displayValue = operand;
   } else {
-    calculator.firstNumber += operand;
     calculator.displayValue += operand;
+    calculator.firstNumber = +calculator.displayValue;
   }
 }
 
 function inputDecimal() {
-  if (!calculator.displayValue.includes('.')) calculator.displayValue += '.';
+  if (!calculator.displayValue.includes('.')) {
+    calculator.displayValue += '.';
+    calculator.firstNumber = +calculator.displayValue;
+  }
+}
+
+function inputSign() {
+  if (+calculator.displayValue < 0)
+    calculator.displayValue = calculator.displayValue.slice(1);
+  else calculator.displayValue = '-' + calculator.displayValue;
+  calculator.firstNumber = +calculator.displayValue;
 }
 
 updateDisplay();
