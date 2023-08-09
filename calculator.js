@@ -1,6 +1,6 @@
 let calculator = {
-  firstNumber: null,
-  secondNumber: null,
+  firstNumber: '',
+  secondNumber: '',
   operator: '',
   displayValue: '',
 };
@@ -49,23 +49,46 @@ function updateDisplay() {
   display.textContent = calculator.displayValue;
 }
 
-function handleButtonClick(event) {
-  let elementClassList = event.target.className.split(' ');
-  if (elementClassList.includes('operand')) {
-    calculator.displayValue += event.target.value;
-  } else if (
-    elementClassList.includes('decimal') &&
-    !calculator.displayValue.includes('.')
-  ) {
-    calculator.displayValue += '.';
-  }
-  // elementClass.some((className) => ['operand', 'decimal'].includes(className))
-
-  // if (elementClass.includes('operand')) {
-  //   calculator.displayValue += event.target.value;
-  // } else if (className.includes('decimal'))
-  //   if (!calculator.displayValue.includes('.')) {
-  //     calculator.displayValue += event.target.value;
-  //   }
+function clearDisplay() {
+  calculator.displayValue = '';
   updateDisplay();
 }
+
+function resetCalculator() {
+  Object.entries(calculator).forEach((entry) => {
+    const [key, value] = entry;
+    calculator[key] = '';
+  });
+}
+
+function handleButtonClick(event) {
+  switch (event.target.className) {
+    case 'operand':
+      inputOperand(event.target.value);
+      break;
+    case 'clear':
+      resetCalculator();
+      break;
+    case 'decimal':
+      inputDecimal();
+      break;
+  }
+  updateDisplay();
+}
+
+function inputOperand(operand) {
+  if (!calculator.firstNumber) {
+    calculator.firstNumber = operand;
+    calculator.displayValue += calculator.firstNumber;
+    console.log(calculator.firstNumber);
+  } else {
+    calculator.firstNumber += operand;
+    calculator.displayValue += operand;
+  }
+}
+
+function inputDecimal() {
+  if (!calculator.displayValue.includes('.')) calculator.displayValue += '.';
+}
+
+updateDisplay();

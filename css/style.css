@@ -60,8 +60,7 @@ body {
 .sign,
 .percent,
 .decimal,
-.equals,
-.zero {
+.equals {
   width: 24%;
   border-radius: 0.5rem;
   background-color: #313131;
@@ -81,6 +80,6 @@ body {
   color: #f6f6f6;
 }
 
-.zero {
+button[value='0'] {
   width: 49%;
 }
