@@ -1,9 +1,8 @@
-let calculator = {
-  firstNumber: null,
-  secondNumber: null,
-  operator: null,
-  displayValue: null,
-};
+let firstNumber = null;
+let secondNumber = null;
+let operator = null;
+let displayValue = null;
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) =>
   button.addEventListener('click', handleButtonClick)
@@ -42,14 +41,11 @@ function operate(operator, num1, num2) {
 
 function updateDisplay() {
   const display = document.querySelector('.display');
-  display.textContent = calculator.displayValue;
+  display.textContent = displayValue;
 }
 
 function resetCalculator() {
-  Object.entries(calculator).forEach((entry) => {
-    const [key, value] = entry;
-    calculator[key] = null;
-  });
+  firstNumber = secondNumber = operator = displayValue = null;
 }
 
 function handleButtonClick(event) {
@@ -80,70 +76,63 @@ function handleButtonClick(event) {
 }
 
 function inputOperand(operand) {
-  if (calculator.firstNumber === null) {
+  if (firstNumber === null) {
     //handles first operand input
-    calculator.firstNumber = +operand;
-    calculator.displayValue = operand;
-  } else if (calculator.operator !== null) {
-    if (calculator.secondNumber === null) {
+    firstNumber = +operand;
+    displayValue = operand;
+  } else if (operator !== null) {
+    if (secondNumber === null) {
       //handles second operand input (after operator)
-      calculator.secondNumber = +operand;
-      calculator.displayValue = operand;
+      secondNumber = +operand;
+      displayValue = operand;
     } else {
       //keep appending operand to existing secondNumber
-      if (isValidLength(calculator.displayValue + operand)) {
-        calculator.displayValue += operand;
-        calculator.secondNumber = +calculator.displayValue;
+      if (isValidLength(displayValue + operand)) {
+        displayValue += operand;
+        secondNumber = +displayValue;
       }
     }
   } else {
-    if (isValidLength(calculator.displayValue + operand)) {
+    if (isValidLength(displayValue + operand)) {
       //keep appending to firstNumber
-      calculator.displayValue += operand;
-      calculator.firstNumber = +calculator.displayValue;
+      displayValue += operand;
+      firstNumber = +displayValue;
     }
   }
 }
 
 function inputOperator() {
-  if (calculator.operator != null) {
+  if (operator != null) {
     inputEqualsOperator();
   }
-  calculator.operator = event.target.value;
+  operator = event.target.value;
 }
 
 function inputDecimal() {
-  if (!calculator.displayValue.includes('.')) {
-    calculator.displayValue += '.';
-    if (calculator.secondNumber == null)
-      calculator.firstNumber = +calculator.displayValue;
-    else calculator.secondNumber = +calculator.displayValue;
+  if (!displayValue.includes('.')) {
+    displayValue += '.';
+    if (secondNumber == null) firstNumber = +displayValue;
+    else secondNumber = +displayValue;
   }
 }
 
 //to toggle minus sign
 function inputSign() {
-  if (+calculator.displayValue < 0)
-    calculator.displayValue = calculator.displayValue.slice(1);
-  else calculator.displayValue = '-' + calculator.displayValue;
-  if (calculator.operator != null)
-    calculator.secondNumber = +calculator.displayValue;
-  else calculator.firstNumber = +calculator.displayValue;
+  if (+displayValue < 0) displayValue = displayValue.slice(1);
+  else displayValue = '-' + displayValue;
+  if (operator != null) secondNumber = +displayValue;
+  else firstNumber = +displayValue;
 }
 
 function inputEqualsOperator() {
-  let result = operate(
-    calculator.operator,
-    calculator.firstNumber,
-    calculator.secondNumber
-  );
+  let result = operate(operator, firstNumber, secondNumber);
   if (!isValidLength(result)) result = result.toExponential(4);
-  calculator.displayValue = result.toString();
+  displayValue = result.toString();
   //reassign first/second num for future operations
   //first will store running total, second will store next operand
-  calculator.firstNumber = result;
-  calculator.secondNumber = null;
-  calculator.operator = null;
+  firstNumber = result;
+  secondNumber = null;
+  operator = null;
 }
 
 function isValidLength(input) {
