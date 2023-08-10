@@ -130,6 +130,7 @@ function inputEqualsOperator() {
     calculator.firstNumber,
     calculator.secondNumber
   );
+  if (!isValidLength(result)) result = result.toExponential(4);
   calculator.displayValue = result.toString();
   //reassign first/second num for future operations
   //first will store running total, second will store next operand
@@ -139,7 +140,7 @@ function inputEqualsOperator() {
 }
 
 function isValidLength(input) {
-  return input.length <= 10;
+  return input.toString().length <= 10;
 }
 
 updateDisplay();
