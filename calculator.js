@@ -70,7 +70,7 @@ function handleButtonClick(event) {
       inputPercent();
       break;
     case 'operator':
-      calculator.operator = event.target.value;
+      inputOperator();
       break;
     case 'equals':
       inputEqualsOperator();
@@ -103,6 +103,13 @@ function inputOperand(operand) {
       calculator.firstNumber = +calculator.displayValue;
     }
   }
+}
+
+function inputOperator() {
+  if (calculator.operator != null) {
+    inputEqualsOperator();
+  }
+  calculator.operator = event.target.value;
 }
 
 function inputDecimal() {
