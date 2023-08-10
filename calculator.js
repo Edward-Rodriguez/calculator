@@ -112,7 +112,9 @@ function inputSign() {
   if (+calculator.displayValue < 0)
     calculator.displayValue = calculator.displayValue.slice(1);
   else calculator.displayValue = '-' + calculator.displayValue;
-  calculator.firstNumber = +calculator.displayValue;
+  if (calculator.operator != null)
+    calculator.secondNumber = +calculator.displayValue;
+  else calculator.firstNumber = +calculator.displayValue;
 }
 
 function inputEqualsOperator() {
