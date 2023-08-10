@@ -66,6 +66,9 @@ function handleButtonClick(event) {
     case 'sign':
       inputSign();
       break;
+    case 'percent':
+      inputPercent();
+      break;
     case 'operator':
       calculator.operator = event.target.value;
       break;
@@ -88,13 +91,17 @@ function inputOperand(operand) {
       calculator.displayValue = operand;
     } else {
       //keep appending operand to existing secondNumber
-      calculator.displayValue += operand;
-      calculator.secondNumber = +calculator.displayValue;
+      if (isValidLength(calculator.displayValue + operand)) {
+        calculator.displayValue += operand;
+        calculator.secondNumber = +calculator.displayValue;
+      }
     }
   } else {
-    //keep appending to firstNumber
-    calculator.displayValue += operand;
-    calculator.firstNumber = +calculator.displayValue;
+    if (isValidLength(calculator.displayValue + operand)) {
+      //keep appending to firstNumber
+      calculator.displayValue += operand;
+      calculator.firstNumber = +calculator.displayValue;
+    }
   }
 }
 
@@ -129,6 +136,10 @@ function inputEqualsOperator() {
   calculator.firstNumber = result;
   calculator.secondNumber = null;
   calculator.operator = null;
+}
+
+function isValidLength(input) {
+  return input.length <= 10;
 }
 
 updateDisplay();
