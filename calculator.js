@@ -56,6 +56,9 @@ function handleButtonClick(event) {
     case 'clear':
       resetCalculator();
       break;
+    case 'backspace':
+      inputBackspace();
+      break;
     case 'decimal':
       inputDecimal();
       break;
@@ -66,7 +69,7 @@ function handleButtonClick(event) {
       inputPercent();
       break;
     case 'operator':
-      inputOperator();
+      inputOperator(event.target.value);
       break;
     case 'equals':
       inputEqualsOperator();
@@ -101,11 +104,22 @@ function inputOperand(operand) {
   }
 }
 
-function inputOperator() {
+function inputOperator(input) {
   if (operator != null) {
     inputEqualsOperator();
   }
-  operator = event.target.value;
+  operator = input;
+}
+
+function inputBackspace() {
+  if (displayValue) {
+    displayValue = displayValue.slice(0, -1);
+    if (secondNumber == null) {
+      displayValue ? (firstNumber = +displayValue) : (firstNumber = null);
+    } else {
+      displayValue ? (secondNumber = +displayValue) : (secondNumber = null);
+    }
+  }
 }
 
 function inputDecimal() {
