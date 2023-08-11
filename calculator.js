@@ -25,6 +25,7 @@ function divide(num1, num2) {
 }
 
 function operate(operator, num1, num2) {
+  if (num2 == null) num2 = num1;
   switch (operator) {
     case 'add':
       return add(num1, num2);
@@ -33,7 +34,8 @@ function operate(operator, num1, num2) {
     case 'multiply':
       return multiply(num1, num2);
     case 'divide':
-      return divide(num1, num2);
+      if (num2 == 0) displayValue = 'lol';
+      else return divide(num1, num2);
     default:
       break;
   }
@@ -105,7 +107,7 @@ function inputOperand(operand) {
 }
 
 function inputOperator(input) {
-  if (operator != null) {
+  if (operator != null && secondNumber !== null) {
     inputEqualsOperator();
   }
   operator = input;
@@ -139,18 +141,26 @@ function inputSign() {
 }
 
 function inputEqualsOperator() {
-  let result = operate(operator, firstNumber, secondNumber);
-  if (!isValidLength(result)) result = result.toExponential(4);
-  displayValue = result.toString();
-  //reassign first/second num for future operations
-  //first will store running total, second will store next operand
-  firstNumber = result;
-  secondNumber = null;
-  operator = null;
+  if (operator !== null) {
+    let result = operate(operator, firstNumber, secondNumber);
+    if (isFinite(result)) {
+      if (!isValidLength(result)) result = result.toExponential(4);
+      displayValue = result.toString();
+    }
+    //reassign first/second num for future operations
+    //first will store running total, second will store next operand
+    firstNumber = result;
+    secondNumber = null;
+    operator = null;
+  }
 }
 
 function isValidLength(input) {
   return input.toString().length <= 10;
+}
+
+function handleDivisionByZero() {
+  displayValue = 'lol';
 }
 
 updateDisplay();
