@@ -1,7 +1,7 @@
 let firstNumber = null;
 let secondNumber = null;
 let operator = null;
-let displayValue = null;
+let displayValue = '';
 
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) =>
@@ -34,8 +34,11 @@ function operate(operator, num1, num2) {
     case 'multiply':
       return multiply(num1, num2);
     case 'divide':
-      if (num2 == 0) displayValue = 'lol';
-      else return divide(num1, num2);
+      // if (num2 == 0) {
+      //   displayValue = 'lol';
+      //   return NaN;
+      // } else
+      return divide(num1, num2);
     default:
       break;
   }
@@ -47,7 +50,8 @@ function updateDisplay() {
 }
 
 function resetCalculator() {
-  firstNumber = secondNumber = operator = displayValue = null;
+  firstNumber = secondNumber = operator = null;
+  displayValue = '';
 }
 
 function handleButtonClick(event) {
@@ -125,7 +129,7 @@ function inputBackspace() {
 }
 
 function inputDecimal() {
-  if (!displayValue.includes('.')) {
+  if (displayValue == '' || !displayValue.includes('.')) {
     displayValue += '.';
     if (secondNumber == null) firstNumber = +displayValue;
     else secondNumber = +displayValue;
@@ -143,10 +147,16 @@ function inputSign() {
 function inputEqualsOperator() {
   if (operator !== null) {
     let result = operate(operator, firstNumber, secondNumber);
-    if (isFinite(result)) {
-      if (!isValidLength(result)) result = result.toExponential(4);
-      displayValue = result.toString();
+    if (result === Infinity) {
+      displayValue = 'lol';
+      firstNumber = NaN;
+      return;
+    } else if (isFinite(result)) {
+      if (!isValidLength(result)) {
+        result = result.toExponential(4);
+      }
     }
+    displayValue = result.toString();
     //reassign first/second num for future operations
     //first will store running total, second will store next operand
     firstNumber = result;
