@@ -4,7 +4,8 @@ let operator = null;
 let displayValue = '';
 
 document.addEventListener('keydown', (event) => {
-  const name = event.key;
+  let name = event.key;
+  if (name === 'Enter') name = '=';
   const key = document.querySelector(`[data-key="${name}"]`);
   if (key !== null) key.click();
 });
