@@ -3,6 +3,12 @@ let secondNumber = null;
 let operator = null;
 let displayValue = '';
 
+document.addEventListener('keydown', (event) => {
+  const name = event.key;
+  const key = document.querySelector(`[data-key="${name}"]`);
+  if (key !== null) key.click();
+});
+
 const buttons = document.querySelectorAll('button');
 buttons.forEach((button) =>
   button.addEventListener('click', handleButtonClick)
