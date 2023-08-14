@@ -8,52 +8,6 @@ buttons.forEach((button) =>
   button.addEventListener('click', handleButtonClick)
 );
 
-function add(num1, num2) {
-  return num1 + num2;
-}
-
-function subtract(num1, num2) {
-  return num1 - num2;
-}
-
-function multiply(num1, num2) {
-  return num1 * num2;
-}
-
-function divide(num1, num2) {
-  return num1 / num2;
-}
-
-function operate(operator, num1, num2) {
-  if (num2 == null) num2 = num1;
-  switch (operator) {
-    case 'add':
-      return add(num1, num2);
-    case 'subtract':
-      return subtract(num1, num2);
-    case 'multiply':
-      return multiply(num1, num2);
-    case 'divide':
-      // if (num2 == 0) {
-      //   displayValue = 'lol';
-      //   return NaN;
-      // } else
-      return divide(num1, num2);
-    default:
-      break;
-  }
-}
-
-function updateDisplay() {
-  const display = document.querySelector('.display');
-  display.textContent = displayValue;
-}
-
-function resetCalculator() {
-  firstNumber = secondNumber = operator = null;
-  displayValue = '';
-}
-
 function handleButtonClick(event) {
   switch (event.target.className) {
     case 'operand':
@@ -82,6 +36,48 @@ function handleButtonClick(event) {
       break;
   }
   updateDisplay();
+}
+
+function operate(operator, num1, num2) {
+  if (num2 == null) num2 = num1;
+  switch (operator) {
+    case 'add':
+      return add(num1, num2);
+    case 'subtract':
+      return subtract(num1, num2);
+    case 'multiply':
+      return multiply(num1, num2);
+    case 'divide':
+      return divide(num1, num2);
+    default:
+      break;
+  }
+}
+
+function updateDisplay() {
+  const display = document.querySelector('.display');
+  display.textContent = displayValue;
+}
+
+function resetCalculator() {
+  firstNumber = secondNumber = operator = null;
+  displayValue = '';
+}
+
+function add(num1, num2) {
+  return num1 + num2;
+}
+
+function subtract(num1, num2) {
+  return num1 - num2;
+}
+
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+function divide(num1, num2) {
+  return num1 / num2;
 }
 
 function inputOperand(operand) {
@@ -167,10 +163,6 @@ function inputEqualsOperator() {
 
 function isValidLength(input) {
   return input.toString().length <= 10;
-}
-
-function handleDivisionByZero() {
-  displayValue = 'lol';
 }
 
 updateDisplay();
