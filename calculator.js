@@ -136,6 +136,9 @@ function inputDecimal() {
     displayValue += '.';
     if (secondNumber == null) firstNumber = +displayValue;
     else secondNumber = +displayValue;
+  } else if (operator !== null) {
+    displayValue = '.';
+    secondNumber = +displayValue;
   }
 }
 
@@ -155,9 +158,7 @@ function inputEqualsOperator() {
       firstNumber = NaN;
       return;
     } else if (isFinite(result)) {
-      if (!isValidLength(result)) {
-        result = result.toExponential(4);
-      }
+      if (!isValidLength(result)) result = roundValue(result);
     }
     displayValue = result.toString();
     //reassign first/second num for future operations
@@ -169,7 +170,18 @@ function inputEqualsOperator() {
 }
 
 function isValidLength(input) {
+  roundValue(input.toString());
   return input.toString().length <= 10;
 }
 
-updateDisplay();
+function roundValue(value) {
+  console.log(value);
+  value = value.toString();
+  if (value.includes('.')) {
+    const decimalIndex = value.indexOf('.');
+    console.log((+value).toFixed(10 - decimalIndex));
+    return (+value).toFixed(10 - decimalIndex);
+  } else {
+    return (+value).toExponential(4);
+  }
+}
