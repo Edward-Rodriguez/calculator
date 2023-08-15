@@ -183,7 +183,3 @@ function roundValue(value) {
   }
   return (+value).toExponential(4);
 }
-
-// 45897;
-// 123658.301;
-// 5675545040.997001;
