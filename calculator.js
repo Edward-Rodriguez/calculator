@@ -121,7 +121,9 @@ function inputOperator(input) {
 }
 
 function inputBackspace() {
-  if (displayValue) {
+  // clear display if not a number
+  if (!isFinite(+displayValue)) displayValue = '';
+  else if (displayValue) {
     displayValue = displayValue.slice(0, -1);
     if (secondNumber == null) {
       displayValue ? (firstNumber = +displayValue) : (firstNumber = null);
@@ -170,18 +172,18 @@ function inputEqualsOperator() {
 }
 
 function isValidLength(input) {
-  roundValue(input.toString());
   return input.toString().length <= 10;
 }
 
 function roundValue(value) {
-  console.log(value);
   value = value.toString();
   if (value.includes('.')) {
     const decimalIndex = value.indexOf('.');
-    console.log((+value).toFixed(10 - decimalIndex));
-    return (+value).toFixed(10 - decimalIndex);
-  } else {
-    return (+value).toExponential(4);
+    if (decimalIndex <= 10) return (+value).toFixed(10 - decimalIndex);
   }
+  return (+value).toExponential(4);
 }
+
+// 45897;
+// 123658.301;
+// 5675545040.997001;
